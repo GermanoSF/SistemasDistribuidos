@@ -16,3 +16,13 @@ Sugestão do Gemini escolhida:
 Foram vistos e revistos conceitos a respeito de:
   sincronismo, threads, sistemas paralelos (clusters) (fortemente aclopados), sistemas disdistribuidos (grid) (fracamente acoplados)
 
+# Aula 3 - 03/08/2026
+
+  Conceitos fundamentais: 
+    Dividir para conquistar - utilização de recursos compartilhados atravéz da comunicação (TCP/IP)
+    para um mesmo proposito, maior eficácia.
+
+  Visto exemplos de Threads
+     
+    
+

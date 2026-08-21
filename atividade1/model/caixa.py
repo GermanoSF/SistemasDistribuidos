@@ -1,3 +1,5 @@
+import threading
+
 class Caixa:
     def __init__(self,saldo_compartilhado):
         self.saldo_compartilhado = saldo_compartilhado

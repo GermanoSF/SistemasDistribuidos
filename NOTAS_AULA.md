@@ -23,6 +23,11 @@ Foram vistos e revistos conceitos a respeito de:
     para um mesmo proposito, maior eficácia.
 
   Visto exemplos de Threads
+
+# Aula Semana 5 - 24/08/2026
+
+  Revisão de conceitos vistos para avaliação na sexta-feira.
+    
      
     
 

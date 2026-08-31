@@ -27,6 +27,11 @@ Foram vistos e revistos conceitos a respeito de:
 # Aula Semana 5 - 24/08/2026
 
   Revisão de conceitos vistos para avaliação na sexta-feira.
+
+# Aula 31/08/2026
+
+  Revisão das questões da prova.
+  Introdução a conteúdo novo (Sockets)
     
      
     

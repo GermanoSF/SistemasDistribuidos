@@ -35,8 +35,8 @@ public class ServidorTCP {
         
     }
     
-    private static synchronized void registrarRemover(boolean operacao, Socket cliente) throws IOException, ClassNotFoundException{
-        
+    private static synchronized void registrarRemover(boolean operacao,Socket cliente) throws IOException, ClassNotFoundException{
+            
         if (operacao){
             
             // Adiciona o socket do cliente à lista (sincronizado para evitar conflitos de concorrência)
@@ -58,7 +58,6 @@ public class ServidorTCP {
             
             
         }
-        
     }
     
     public static void main(String[] args) throws ClassNotFoundException {

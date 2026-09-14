@@ -4,45 +4,30 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author laboratorio
  */
 public class ServidorModel {
     
-    private boolean novaMensagem = false;
-    private boolean novoCliente = false;
+    private int clientes = 0;
     private String mensagem;
-    private String clienteDados;
+    private List<String> clienteDados;
+    
+    public void addClienteDados(String dados){
         
-    public ServidorModel(String clienteDados){
-    
-        this.clienteDados = clienteDados;
-    
+        clienteDados.add(dados);
+        
     }
 
-    public String getClienteDados() {
+    public List<String> getClienteDados() {
         return clienteDados;
     }
 
-    public void setClienteDados(String clienteDados) {
+    public void setClienteDados(List<String> clienteDados) {
         this.clienteDados = clienteDados;
-    }
-    
-    public boolean isNovaMensagem() {
-        return novaMensagem;
-    }
-
-    public void setNovaMensagem(boolean novaMensagem) {
-        this.novaMensagem = novaMensagem;
-    }
-
-    public boolean isNovoCliente() {
-        return novoCliente;
-    }
-
-    public void setNovoCliente(boolean novoCliente) {
-        this.novoCliente = novoCliente;
     }
 
     public String getMensagem() {
@@ -52,7 +37,15 @@ public class ServidorModel {
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
-    
-    
+
+    public int getClientes() {
+        return clientes;
+    }
+
+    public void addClientes(){
+        
+        clientes++;
+        
+    }
     
 }

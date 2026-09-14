@@ -20,15 +20,13 @@ import model.ServidorModel;
  */
 public class ClienteTCP {
     
-    static ObjectOutputStream saida;
-    static ObjectInputStream entrada;
-    static ClienteModel cliente;
-    static ServidorModel servidor;
+    private static ObjectOutputStream saida;
+    private static ObjectInputStream entrada;
+    private static ClienteModel cliente;
     
-    public ClienteTCP(ClienteModel cliente, ServidorModel servidor){
+    public ClienteTCP(ClienteModel cliente){
         
         this.cliente = cliente;
-        this.servidor = servidor;
         
     }
     

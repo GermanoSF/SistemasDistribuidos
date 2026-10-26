@@ -43,7 +43,7 @@ public class ServidorGUI extends javax.swing.JFrame {
                 if (!clientes.isEmpty()){
                     for (ClienteThread cliente : clientes){
 
-                        txaClientesTabela.setText(cliente.getToken()+"   "+cliente.getDados()+"       "+cliente.getTempo());
+                        txaClientesTabela.setText(txaClientesTabela.getText()+"\n"+cliente.getToken()+"   "+cliente.getDados()+"       "+cliente.getTempo());
 
                     }
                 }

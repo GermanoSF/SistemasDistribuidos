@@ -11,11 +11,12 @@ import thread.ClienteThread;
 
 public class ServerUDP implements Runnable{
 
-    static List<String> remocoesPendentes = new ArrayList<>();
-    List<ClienteThread> clientes;
+    public static volatile List<String> remocoesPendentes = new ArrayList<>();
+    static List<ClienteThread> clientes;
     Random gerador = new Random();
-    Servidor servidor = new Servidor();
+    static Servidor servidor = new Servidor();
     DatagramSocket socket;
+    String retorno;
     
     public ServerUDP(List<ClienteThread> clientes) {
         
@@ -24,9 +25,10 @@ public class ServerUDP implements Runnable{
         
     }
     
-    public static synchronized void addRemocaoPendente(String token){
+    public static synchronized void removerToken(String token){
         
-        remocoesPendentes.add(token);
+        clientes.removeIf(c -> c.getToken().equals(token));
+        servidor.removeToken(Integer.parseInt(token));
         
     }
 
@@ -34,17 +36,6 @@ public class ServerUDP implements Runnable{
     public void run() {
         try {
             while (true) {
-                
-                if (!ServerUDP.remocoesPendentes.isEmpty()){
-                    
-                    for (String token : remocoesPendentes){
-                        
-                        clientes.removeIf(c -> c.getToken().equals(token));
-                        servidor.removeToken(Integer.parseInt(token));
-                        
-                    }
-                    
-                }
                 
                 byte[] dados = new byte[1024];
 
@@ -71,16 +62,27 @@ public class ServerUDP implements Runnable{
                 }
                 else{
 
+                    retorno = "Erro";
+                    
                     for (int i = 0; i < clientes.size(); i++){
 
-                        if (clientes.get(i).equals(mensagem)){
+                        if (clientes.get(i).equals(mensagem.substring(0,4))){
                             
-                            clientes.get(i).addDados(mensagem.substring(5,mensagem.length()));
+                            clientes.get(i).addDados(mensagem.substring(4,mensagem.length()));
                             i = clientes.size();
+                            
+                            retorno = "Certo";
                             
                         }
 
                     }
+                    
+                    DatagramPacket resposta = ComunicadorUDP.montaMensagem(
+                                                                        retorno, 
+                                                                        pacote.getAddress().getHostAddress(),
+                                                                        pacote.getPort()
+                                                                          );
+                    ComunicadorUDP.enviaMensagem(socket, resposta);
 
                 }
             }

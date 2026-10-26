@@ -9,6 +9,9 @@ import UDP.ClienteUDP;
 import UDP.ComunicadorUDP;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ClienteGUI extends javax.swing.JFrame {
     
@@ -17,11 +20,12 @@ public class ClienteGUI extends javax.swing.JFrame {
     public volatile boolean[] enviarB;
     public volatile String[] dadosS;
     public volatile boolean[] fecharConexaoB;
+    ClienteUDP cliente;
     
     public ClienteGUI() {
         initComponents();
         
-        dadosS = new String[3];
+        dadosS = new String[4];
         
         fecharConexaoB = new boolean[1];
         tokenB = new boolean[1];
@@ -29,7 +33,8 @@ public class ClienteGUI extends javax.swing.JFrame {
         fecharConexaoB[0] = false;
         tokenB[0] = false;
         enviarB[0] = false;
-        ClienteUDP cliente = new ClienteUDP(tokenB,enviarB,dadosS,fecharConexaoB);
+        cliente = new ClienteUDP(tokenB,enviarB,dadosS,fecharConexaoB);
+        new Thread(cliente).start();
   
     }
 
@@ -189,11 +194,27 @@ public class ClienteGUI extends javax.swing.JFrame {
 
         String nome = nomeTxt.getText();
         String email = emailTxt.getText();
-        nomeEnvTxt.setText(nome);
-        EmailEnvTxt.setText(email);
         dadosS[0] = nome;
         dadosS[1] = email;
         enviarB[0] = true;
+        
+        try {
+            Thread.sleep(500);
+            if (dadosS[3].equals("Certo")){
+            
+                nomeEnvTxt.setText(nome);
+                EmailEnvTxt.setText(email);
+                JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!");
+
+            }
+            else{
+
+                JOptionPane.showMessageDialog(null, "Erro ao enviar dados, solicite um novo token!");
+
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ClienteGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }      
         
     }//GEN-LAST:event_enviarBtnActionPerformed
 

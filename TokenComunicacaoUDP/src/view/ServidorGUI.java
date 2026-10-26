@@ -4,6 +4,13 @@
  */
 package view;
 
+import UDP.ServerUDP;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import thread.ClienteThread;
+
 /**
  *
  * @author laboratorio
@@ -11,14 +18,45 @@ package view;
 public class ServidorGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ServidorGUI.class.getName());
-
+    List<ClienteThread> clientes = new ArrayList<>();
+    ServerUDP serverUDP;
+    
     /**
      * Creates new form ServidorGUI
      */
-    public ServidorGUI() {
+    public ServidorGUI(){
+        serverUDP = new ServerUDP(clientes);
+        new Thread(serverUDP).start();
         initComponents();
+        new Thread(() -> {
+                atualizacaoTabela();
+            }).start();
     }
 
+    private void atualizacaoTabela(){
+        
+        while(true){
+            
+            try {
+                txaClientesTabela.setText("");
+                
+                if (!clientes.isEmpty()){
+                    for (ClienteThread cliente : clientes){
+
+                        txaClientesTabela.setText(cliente.getToken()+"   "+cliente.getDados()+"       "+cliente.getTempo());
+
+                    }
+                }
+                
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ServidorGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,6 +72,7 @@ public class ServidorGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        txaClientesTabela.setEditable(false);
         txaClientesTabela.setColumns(20);
         txaClientesTabela.setRows(5);
         jScrollPane1.setViewportView(txaClientesTabela);

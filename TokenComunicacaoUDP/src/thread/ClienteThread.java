@@ -64,7 +64,7 @@ public class ClienteThread extends Thread{
             
         }
         
-        ServerUDP.addRemocaoPendente(token);
+        ServerUDP.removerToken(token);
         
     }
     

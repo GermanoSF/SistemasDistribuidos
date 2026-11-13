@@ -4,14 +4,21 @@
  */
 package view;
 
+import controller.GeradorQRCodeTela;
+import interfaces.IServicos;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+import java.rmi.*;
+
 /**
  *
  * @author laboratorio
  */
-public class TelaCliente extends javax.swing.JFrame {
+public class TelaCliente extends javax.swing.JFrame{
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCliente.class.getName());
-
+    private IServicos iServicos;
+    
     /**
      * Creates new form TelaCliente
      */
@@ -32,7 +39,7 @@ public class TelaCliente extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtLinkComprido = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtLinkCurto = new javax.swing.JTextField();
         btnLink = new javax.swing.JButton();
         btnQRCode = new javax.swing.JButton();
 
@@ -48,15 +55,26 @@ public class TelaCliente extends javax.swing.JFrame {
 
         jLabel2.setText("Link curto");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtLinkCurto.setEditable(false);
+        txtLinkCurto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtLinkCurtoActionPerformed(evt);
             }
         });
 
         btnLink.setText("OK");
+        btnLink.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLinkActionPerformed(evt);
+            }
+        });
 
         btnQRCode.setText("Gerar QR Code");
+        btnQRCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQRCodeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,24 +83,27 @@ public class TelaCliente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(266, 266, 266)
-                        .addComponent(lblQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
+                        .addContainerGap(266, Short.MAX_VALUE)
+                        .addComponent(lblQRCode, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 95, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtLinkComprido)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(378, 378, 378)
-                        .addComponent(btnLink))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(364, 364, 364)
-                        .addComponent(btnQRCode)))
+                            .addComponent(txtLinkCurto, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE))))
                 .addContainerGap(216, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnQRCode)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLink)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,10 +119,10 @@ public class TelaCliente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                    .addComponent(txtLinkCurto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
                 .addComponent(btnQRCode)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -111,9 +132,35 @@ public class TelaCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtLinkCompridoActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtLinkCurtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLinkCurtoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtLinkCurtoActionPerformed
+
+    private void btnLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLinkActionPerformed
+        
+        try {
+            iServicos = (IServicos) Naming.lookup("rmi://localhost/servicos");
+            txtLinkCurto.setText(iServicos.encurtarLink(txtLinkComprido.getText()));
+        } catch (RemoteException ex) {
+            System.getLogger(TelaCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (NotBoundException ex) {
+            System.getLogger(TelaCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (MalformedURLException ex) {
+            System.getLogger(TelaCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } 
+        
+    }//GEN-LAST:event_btnLinkActionPerformed
+
+    private void btnQRCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQRCodeActionPerformed
+        // TODO add your handling code here:
+        
+        if (txtLinkCurto.getText().isEmpty()) return;
+        
+        GeradorQRCodeTela gerarQRCode = new GeradorQRCodeTela(txtLinkCurto.getText(),lblQRCode);
+        Thread thread = new Thread(gerarQRCode);
+        thread.start();
+        
+    }//GEN-LAST:event_btnQRCodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,8 +192,8 @@ public class TelaCliente extends javax.swing.JFrame {
     private javax.swing.JButton btnQRCode;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblQRCode;
     private javax.swing.JTextField txtLinkComprido;
+    private javax.swing.JTextField txtLinkCurto;
     // End of variables declaration//GEN-END:variables
 }

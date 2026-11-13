@@ -12,9 +12,20 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GeradorQRCodeTela extends JFrame {
+public class GeradorQRCodeTela extends JFrame implements Runnable{
 
+    private String link;
+    private volatile JLabel label;
+    
     public GeradorQRCodeTela(String link, JLabel label) {
+        
+        this.link = link;
+        this.label = label;
+        
+    }
+    
+    @Override
+    public void run(){
         
         int largura = 300;
         int altura = 300;
@@ -55,6 +66,7 @@ public class GeradorQRCodeTela extends JFrame {
         } catch (WriterException e) {
             JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
 
 }

@@ -27,6 +27,8 @@ public class GeradorQRCodeTela extends JFrame implements Runnable{
     @Override
     public void run(){
         
+        if (link.equals("Error")) return;
+        
         int largura = 300;
         int altura = 300;
 

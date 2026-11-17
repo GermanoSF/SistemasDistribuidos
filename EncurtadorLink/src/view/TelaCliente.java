@@ -152,9 +152,9 @@ public class TelaCliente extends javax.swing.JFrame{
     private void btnQRCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQRCodeActionPerformed
         // TODO add your handling code here:
         
-        if (txtLinkCurto.getText().isEmpty()) return;
+        if (txtLinkComprido.getText().isEmpty()) return;
         
-        GeradorQRCodeTela gerarQRCode = new GeradorQRCodeTela(txtLinkCurto.getText(),lblQRCode);
+        GeradorQRCodeTela gerarQRCode = new GeradorQRCodeTela(txtLinkComprido.getText(),lblQRCode);
         Thread thread = new Thread(gerarQRCode);
         thread.start();
         
